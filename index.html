@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProjectOhm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #upload-form {
+            margin-bottom: 20px;
+        }
+        #results {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to ProjectOhm</h1>
@@ -17,6 +34,9 @@
         async function uploadImage() {
             const form = document.getElementById('upload-form');
             const formData = new FormData(form);
+            const resultsDiv = document.getElementById('results');
+
+            resultsDiv.innerHTML = 'Uploading...';  // Show a loading message
 
             try {
                 const response = await fetch('/api/upload', {
@@ -25,14 +45,19 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.json();
-                document.getElementById('results').innerHTML = 
-                    'Recognized Objects: ' + (data.objects.length ? data.objects.join(', ') : 'No objects recognized');
+
+                if (data.objects && data.objects.length > 0) {
+                    resultsDiv.innerHTML = 'Recognized Objects: ' + data.objects.join(', ');
+                } else {
+                    resultsDiv.innerHTML = 'No objects recognized.';
+                }
             } catch (error) {
-                document.getElementById('results').innerHTML = 'Error: ' + error.message;
+                console.error('Upload failed:', error);
+                resultsDiv.innerHTML = '<span class="error">Error: ' + error.message + '</span>';
             }
         }
     </script>
