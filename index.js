@@ -42,7 +42,7 @@ app.post('/api/upload', upload.single('image'), async (req, res) => {
         // Return the recognized objects
         res.status(200).json({ objects });
     } catch (error) {
-        console.error('Error processing image:', error);
+        console.error('Error processing image:', error.message);
         res.status(500).json({ error: 'Error processing image' });
     }
 });
