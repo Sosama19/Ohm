@@ -1,10 +1,9 @@
 const express = require('express');
 const multer = require('multer');
-const tf = require('@tensorflow/tfjs-node');
-const mobilenet = require('@tensorflow-models/mobilenet');
-const { Image } = require('image-js');
 const path = require('path');
 const fs = require('fs');
+const { Image } = require('image-js');
+const mobilenet = require('@tensorflow-models/mobilenet');
 
 const app = express();
 const port = process.env.PORT || 3000;
