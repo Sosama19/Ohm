@@ -45,7 +45,11 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    if (response.status === 404) {
+                        throw new Error('API endpoint not found. Please check your server configuration.');
+                    } else {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
                 }
 
                 const data = await response.json();
